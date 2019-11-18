@@ -18,6 +18,7 @@ package org.springframework.samples.petclinic.vet;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
@@ -27,7 +28,7 @@ import java.util.Map;
  * @author Ken Krebs
  * @author Arjen Poutsma
  */
-@Controller
+@RestController
 class VetController {
 
     private final VetRepository vets;
@@ -54,5 +55,16 @@ class VetController {
         vets.getVetList().addAll(this.vets.findAll());
         return vets;
     }
+
+     @GetMapping("/employees")
+      public String listJson(Map<String, Object> model) {
+        // Here we are returning an object of type 'Vets' rather than a collection of Vet
+        // objects so it is simpler for Object-Xml mapping
+        Vets vets = new Vets();
+        vets.getVetList().addAll(this.vets.findAll());
+        model.put("vets", vets);
+        return  vets.toString();
+    }
+
 
 }
